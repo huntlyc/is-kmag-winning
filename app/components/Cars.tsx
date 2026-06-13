@@ -41,14 +41,14 @@ const Car = ({ car }: { car: RankWithRunningStatus }) => {
                 </div>
 
                 <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${car.inPit
-                            ? "bg-amber-300/15 text-amber-300"
-                            : car.isRunning
-                                ? "bg-emerald-500/15 text-emerald-400"
-                                : "bg-red-500/15 text-red-400"
+                    className={`rounded-full px-3 py-1 text-xs font-medium ${car.isRunning
+                            ? car.inPit
+                                ? "bg-amber-300/15 text-amber-300"
+                                : "bg-emerald-500/15 text-emerald-400"
+                            : "bg-red-500/15 text-red-400"
                         }`}
                 >
-                    {car.inPit ? "Pit" : car.isRunning ? "Running" : "Retired"}
+                    {car.isRunning ? (car.inPit ? "Pit" : "Running") : "Retired"}
                 </span>
             </div>
 
