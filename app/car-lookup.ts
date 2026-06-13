@@ -24,7 +24,7 @@ const filterCars: FilterCars = {
     //lmp2
     24: {
         name: "Doohan",
-        border: "border-green-500",
+        border: "border-violet-500",
     },
     30: {
         name: "Pin",
@@ -33,7 +33,7 @@ const filterCars: FilterCars = {
     // gt
     23: {
         name: "Barichello",
-        border: "border-green-800",
+        border: "border-green-500",
     },
 };
 export default filterCars;
