@@ -28,7 +28,7 @@ export interface TimingDetails {
     carsEnergyTanks: CarsEnergyTanks;
     pitIns: CarsEnergyTanks[];
     seasonPointsBefore: { [key: string]: number };
-    carLocations: CarsEnergyTanks[];
+    carLocations: CarLocations[];
     errors: null;
 }
 
@@ -73,6 +73,16 @@ export interface CarsEnergyTanks {
     lapNumber?: number;
     status?: Status;
     tires?: Tire[];
+}
+
+export interface CarLocations {
+    carLocation: string;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
 }
 
 export enum CarLocation {
@@ -525,4 +535,5 @@ export interface Weather {
 
 export interface RankWithRunningStatus extends Rank {
     isRunning: boolean;
+    inPit: boolean;
 }

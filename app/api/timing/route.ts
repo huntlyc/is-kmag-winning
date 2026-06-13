@@ -21,10 +21,24 @@ export async function GET(request: NextRequest) {
         timing.ranks.forEach((car) => {
             const curCarNum = parseInt(car.carNumber, 10);
             if (filterCarNums.includes(curCarNum)) {
+                let isRunning = true;
                 timing.runningStatuses.forEach((status) => {
                     if (parseInt(status.carNumber, 10) === curCarNum) {
-                        cars.push({ isRunning: status.status === "Running", ...car });
+                        isRunning = status.status === "Running";
                     }
+                });
+
+                let inPit = false;
+                timing.carLocations.forEach((location) => {
+                    if (parseInt(location.carNumber, 10) === curCarNum) {
+                        inPit = location.carLocation === "Pit";
+                    }
+                });
+
+                cars.push({
+                    isRunning,
+                    inPit,
+                    ...car,
                 });
             }
         });
