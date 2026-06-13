@@ -1,32 +1,32 @@
 "use client";
 
 import { KMagStatus } from "./KMagStatus";
+import filterCars from "../car-lookup";
 const KMAG_NUMBER = 15;
-const JESUS_NUMBER = 51;
-const AIT_NUMBER = 12;
 import { RankWithRunningStatus } from "../types/raw-timing-feed";
 import { useEffect, useState } from "react";
 
 const getDrivername = (car: RankWithRunningStatus) => {
-    switch (parseInt(car.carNumber, 10)) {
-        case KMAG_NUMBER:
-            return "K-mag";
-        case JESUS_NUMBER:
-            return "Jesus";
-        case AIT_NUMBER:
-            return "Aitkin";
-    }
+    let name = "";
+    Object.entries(filterCars).forEach(([carNumber, carDetails]) => {
+        if (carNumber == car.carNumber) {
+            name = carDetails.name;
+        }
+    });
+    return name;
 };
+
 const Car = ({ car }: { car: RankWithRunningStatus }) => {
-    const borderClassByCarNumber: Record<number, string> = {
-        [KMAG_NUMBER]: "border-blue-500",
-        [JESUS_NUMBER]: "border-red-500",
-        [AIT_NUMBER]: "border-green-500",
-    };
+    let borderClass = "border-zinc-800";
+    Object.entries(filterCars).forEach(([carNumber, carDetails]) => {
+        if (carNumber == car.carNumber) {
+            borderClass = carDetails.border;
+        }
+    });
 
-    const borderClass =
-        borderClassByCarNumber[parseInt(car.carNumber, 10)] ?? "border-zinc-800";
-
+    const overallFirst =
+        car.overallPosition === 1 ? "text-yellow-400" : "text-white";
+    const classFirst = car.position === 1 ? "text-yellow-400" : "text-white";
     return (
         <article
             className={`rounded-xl border-2 ${borderClass} bg-zinc-900 p-5 shadow-sm transition hover:bg-zinc-800`}
@@ -55,7 +55,7 @@ const Car = ({ car }: { car: RankWithRunningStatus }) => {
                     <p className="text-xs uppercase tracking-wider text-zinc-500">
                         Class Pos
                     </p>
-                    <p className="font-mono text-2xl font-semibold text-white">
+                    <p className={`font-mono text-2xl font-semibold ${classFirst}`}>
                         {car.position}
                     </p>
                 </div>
@@ -64,7 +64,7 @@ const Car = ({ car }: { car: RankWithRunningStatus }) => {
                     <p className="text-xs uppercase tracking-wider text-zinc-500">
                         Overall
                     </p>
-                    <p className="font-mono text-2xl font-semibold text-white">
+                    <p className={`${overallFirst} font-mono text-2xl font-semibold `}>
                         {car.overallPosition}
                     </p>
                 </div>
@@ -73,8 +73,17 @@ const Car = ({ car }: { car: RankWithRunningStatus }) => {
     );
 };
 
+export const Spinner = () => {
+    return (
+        <div className="flex items-center justify-center py-10">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-600 border-t-white" />
+        </div>
+    );
+};
+
 export const Cars = () => {
     const [cars, setCars] = useState<RankWithRunningStatus[]>([]);
+    const [loading, setLoading] = useState(true);
 
     async function fetchTiming() {
         const res = await fetch(`/api/timing`);
@@ -86,6 +95,7 @@ export const Cars = () => {
         if (data.cars) {
             setCars(data.cars);
         }
+        setLoading(false);
     }
     useEffect(() => {
         const inititalSetup = async () => {
@@ -96,6 +106,7 @@ export const Cars = () => {
 
     useEffect(() => {
         const interval = setInterval(() => {
+            setLoading(true);
             fetchTiming();
         }, 60_000); // every minute
 
@@ -117,6 +128,12 @@ export const Cars = () => {
                     <Car key={car.pid} car={car} />
                 ))}
             </section>
+            {loading && <Spinner />}
+            {!loading && (
+                <p className="mt-4 opacity-50 text-center text-white">
+                    Refeshes once in a while
+                </p>
+            )}
         </>
     );
 };

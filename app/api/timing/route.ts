@@ -1,9 +1,13 @@
 import type { NextRequest } from "next/server";
 import * as timing from "../../types/raw-timing-feed";
+import filterCars from "@/app/car-lookup";
 
 export async function GET(request: NextRequest) {
     // focus cars
-    const filterCars = [15, 12, 51];
+    const filterCarNums: number[] = [];
+    Object.keys(filterCars).forEach((carNumber) => {
+        filterCarNums.push(parseInt(carNumber, 10));
+    });
 
     const res = await fetch(
         "https://insights.griiip.com/api/v2/public/live/session/18130/bootstrap?includeViewers=true&includeUnclassifiedRanks=false",
@@ -16,7 +20,7 @@ export async function GET(request: NextRequest) {
 
         timing.ranks.forEach((car) => {
             const curCarNum = parseInt(car.carNumber, 10);
-            if (filterCars.includes(curCarNum)) {
+            if (filterCarNums.includes(curCarNum)) {
                 timing.runningStatuses.forEach((status) => {
                     if (parseInt(status.carNumber, 10) === curCarNum) {
                         cars.push({ isRunning: status.status === "Running", ...car });
@@ -24,7 +28,12 @@ export async function GET(request: NextRequest) {
                 });
             }
         });
-        return Response.json({ cars });
+
+        const sortedCars = cars.sort(
+            (a, b) => a.overallPosition - b.overallPosition,
+        );
+
+        return Response.json({ cars: sortedCars });
     }
     return Response.json({ error: `couldnt get feed ${res.status}` });
 }

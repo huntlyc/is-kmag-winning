@@ -16,9 +16,18 @@ export const KMagStatus = (props: {
         }
     }
 
+    cars.forEach((car) => {
+        if (!car.isRunning) {
+            span = <span className="text-red-300">He&apos;s gone home</span>;
+        }
+    });
+
     return (
-        <h1 className="text-4xl font-bold tracking-tight text-center">
-            Is KMag Winning? {span}
-        </h1>
+        <>
+            <h1 className="text-4xl mb-2 font-bold tracking-tight text-center">
+                Is KMag Winning?
+            </h1>
+            <h2 className="text-4xl font-bold tracking-tight text-center">{span}</h2>
+        </>
     );
 };
