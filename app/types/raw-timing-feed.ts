@@ -1,0 +1,528 @@
+export interface TimingDetails {
+    sessionInfo: SessionInfo;
+    sessionClock: SessionClock;
+    participants: Participant[];
+    sectors: BestLap[];
+    raceFlags: RaceFlag[];
+    ranks: Rank[];
+    trackDetails: TrackDetails;
+    sessionLengthLimit: SessionLengthLimit;
+    weather: Weather;
+    predictedLapTimes: any[];
+    strikingDistances: StrikingDistance[];
+    gapTrends: GapTrend[];
+    chequeredFlags: any[];
+    currentLapSectors: { [key: string]: BestLap[] };
+    raceLogFirstPage: RaceLogFirstPage;
+    commentatorPhraseLatest: CommentatorPhraseLatest;
+    grids: Grid[];
+    laps: BestLap[];
+    bestLaps: BestLap[];
+    gaps: Gap[];
+    runningStatuses: CarsEnergyTanks[];
+    lapClassifications: any[];
+    attackMode: any[];
+    runningBattles: RunningBattle[];
+    latestSpeedTraps: any[];
+    tires: CarsEnergyTanks[];
+    carsEnergyTanks: CarsEnergyTanks;
+    pitIns: CarsEnergyTanks[];
+    seasonPointsBefore: { [key: string]: number };
+    carLocations: CarsEnergyTanks[];
+    errors: null;
+}
+
+export interface BestLap {
+    sessionPart?: number;
+    lapNumber: number;
+    lapTimeMillis?: number;
+    isValid: boolean;
+    color: Color;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+    sectorNumber?: number;
+    sectorTimeMillis?: number;
+}
+
+export enum Class {
+    Empty = "",
+    Hypercar = "HYPERCAR",
+    Lmgt3 = "LMGT3",
+    Lmp2 = "LMP2",
+}
+
+export enum Color {
+    Gray = "Gray",
+    Green = "Green",
+    Purple = "Purple",
+}
+
+export interface CarsEnergyTanks {
+    carLocation?: CarLocation;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+    items?: CarsEnergyTanksItem[];
+    lapNumber?: number;
+    status?: Status;
+    tires?: Tire[];
+}
+
+export enum CarLocation {
+    Pit = "Pit",
+    Track = "Track",
+}
+
+export interface CarsEnergyTanksItem {
+    pid: number;
+    e: number;
+    t: number;
+}
+
+export enum Status {
+    Running = "Running",
+}
+
+export interface Tire {
+    id: ID;
+    compound: Compound;
+    isChanged: boolean;
+    ageInLaps: number;
+}
+
+export enum Compound {
+    Hard = "HARD",
+    Medium = "MEDIUM",
+    Soft = "SOFT",
+}
+
+export enum ID {
+    FrontLeft = "frontLeft",
+    FrontRight = "frontRight",
+    RearLeft = "rearLeft",
+    RearRight = "rearRight",
+}
+
+export interface CommentatorPhraseLatest {
+    phrase: string;
+    audioUrl: string;
+    phrases: AudioUrls;
+    audioUrls: AudioUrls;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface AudioUrls {
+    en: string;
+}
+
+export interface GapTrend {
+    pidAhead: number;
+    trendType: TrendType;
+    avgGapChanges: number;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export enum TrendType {
+    NoTrend = "NoTrend",
+}
+
+export interface Gap {
+    gapToFirstMillis: number;
+    gapToFirstLaps: number;
+    gapToAheadMillis: number;
+    gapToAheadLaps: number;
+    isDeleted: boolean;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export interface Grid {
+    startingAt: number;
+    overallStartingAt: number;
+    qualifiedAt: number;
+    penaltyPlaces: number;
+    startFrom: StartFrom;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export enum StartFrom {
+    Grid = "Grid",
+}
+
+export interface Participant {
+    firstname: string;
+    lastname: string;
+    displayName: string;
+    threeLettersName: string;
+    currentDriverId: string;
+    countryCodeTwo: null | string;
+    seasonPid: number;
+    hasCarNumberImage: boolean;
+    hasManufacturerImage: boolean;
+    manufacturer: string;
+    teamName: string;
+    drivers: Driver[];
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export interface Driver {
+    displayName: string;
+    threeLettersName: string;
+    externalDriverID: string;
+    categoryId: CategoryID;
+    countryCodeTwo: string;
+    irRating: null;
+    licenseType: null;
+    safetyRating: null;
+    driverId: number;
+    hasImage: boolean;
+    seasonParticipantDriverId: number;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export enum CategoryID {
+    B = "B",
+    G = "G",
+    P = "P",
+    S = "S",
+}
+
+export interface RaceFlag {
+    raceFlagID: string;
+    flag: Flag;
+    sectorNumbers: any[];
+    lapNumber: number;
+    info: string;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export enum Flag {
+    Green = "Green",
+    Yellow = "Yellow",
+}
+
+export interface RaceLogFirstPage {
+    items: RaceLogFirstPageItem[];
+    startAfter: number;
+}
+
+export interface RaceLogFirstPageItem {
+    diffFromPersonalBest?: number;
+    diffFromRacePace?: number;
+    weight: number;
+    type: Type;
+    raceLogItemId: string;
+    lapNumber: number;
+    sectorNumber: number;
+    seriesPid: number;
+    sts: Date;
+    originatingMessageID: string;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+    secondaryPid?: number;
+    rank?: number;
+    overtakenPid?: number;
+    newPosition?: number;
+    totalTimeInPitMillis?: number;
+    newDriverId?: string;
+    previousDriverId?: string;
+    lapTimeMillis?: number;
+}
+
+export enum Type {
+    Battle = "Battle",
+    DriverSwap = "DriverSwap",
+    FastestLap = "FastestLap",
+    Overtake = "Overtake",
+    PitIn = "PitIn",
+    PitOut = "PitOut",
+    SignificantTimeLoss = "SignificantTimeLoss",
+}
+
+export interface Rank {
+    overallPosition: number;
+    position: number;
+    isDeleted: boolean;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export interface RunningBattle {
+    battleId: string;
+    secondaryPID: number;
+    startLapNumber: number;
+    isFinished: boolean;
+    rank: number;
+    attacks: Attack[];
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export interface Attack {
+    defenderPID: number;
+    isFinished: boolean;
+    rank: number;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: Class;
+}
+
+export interface SessionClock {
+    increment: number;
+    tsNow: Date;
+    startTime: Date;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface SessionInfo {
+    carNumbersAsIcons: boolean;
+    displayNumberOnMapByDefault: boolean;
+    trackMapOnLeft: boolean;
+    trackId: number;
+    trackName: string;
+    trackConfigName: string;
+    participantIconColumns: Column[];
+    hiddenCharts: HiddenChart[];
+    rankingTableColumns: Column[];
+    timingTableColumns: Column[];
+    uiBufferDurationMillis: number;
+    hasNonAnonymousPolls: boolean;
+    hasChampionshipRules: boolean;
+    startTime: Date;
+    seriesName: string;
+    seasonName: string;
+    eventName: string;
+    eventId: number;
+    sessionName: Session;
+    sessionType: Session;
+    reverseClock: boolean;
+    seasonId: number;
+    seriesId: number;
+    hasTelemetry: boolean;
+    isTimeBasedSession: boolean;
+    isRaceSession: boolean;
+    lastKnownExternalId: string;
+    hasAttackMode: boolean;
+    isStandingStart: boolean;
+    hasSeenChequered: boolean;
+    domain: string;
+    trackType: null;
+    currentViewersCount: number;
+    totalViewersCount: number;
+    isStarted: boolean;
+    strengthOfField: any[];
+    connectionStatus: ConnectionStatus;
+    sessionClasses: SessionClass[];
+    sessionCategories: SessionCategory[];
+    carLocationMechanism: string;
+    rankClassificationType: string;
+    hasTrackInfo: boolean;
+    hideFromUsers: boolean;
+    hasClasses: boolean;
+    isPrivateLeague: boolean;
+    commentatorEnabled: boolean;
+    sessionAvailability: string;
+    preferOfficialRanking: boolean;
+    vehicleType: string;
+    units: Units;
+    sectorColors: string[];
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface ConnectionStatus {
+    lastReceived: Date;
+    lastPublished: Date;
+    lastNonPingPublished: Date;
+    color: Color;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface HiddenChart {
+    chart: string;
+    type: string;
+    category: string;
+}
+
+export interface Column {
+    id: number;
+    seasonId: number;
+    order: number;
+    columnName: string;
+    sessionType?: Session;
+}
+
+export enum Session {
+    Race = "Race",
+}
+
+export interface SessionCategory {
+    categoryId: CategoryID;
+    threeLettersName: string;
+    name: string;
+    color: string;
+    sortKey: number;
+}
+
+export interface SessionClass {
+    classId: Class;
+    classThreeLettersName: string;
+    className: Class;
+    classColor: string;
+    sortKey: number;
+}
+
+export interface Units {
+    speed: string;
+    distance: string;
+    temperature: string;
+    pressure: string;
+    volume: string;
+}
+
+export interface SessionLengthLimit {
+    sessionLengthType: string;
+    lapsLimit: number;
+    timeLimitSeconds: number;
+    extraLapsAfterTimeEnds: number;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface StrikingDistance {
+    strikingDistanceLaps: number;
+    pidAhead: number;
+    lapNumber: number;
+    sectorNumber: number;
+    loopIndex: number;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface TrackDetails {
+    trackConfigId: number;
+    trackName: string;
+    officialTurns: number;
+    sectorsCount: number;
+    pitInSector: number;
+    pitOutSector: number;
+    country: string;
+    length: number;
+    hasTrackPoints: boolean;
+    hasSegments: boolean;
+    trackPointsGeneratedAt: Date;
+    isPitCrossSFLine: boolean;
+    trackMarks: TrackMark[];
+    segments: any[];
+    speedTrapInfo: any[];
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface TrackMark {
+    name: string;
+    relativeDistance: number;
+    markType: string;
+}
+
+export interface Weather {
+    temperature: number;
+    humidity: number;
+    pressure: number;
+    trackTemperature: number;
+    windDirectionCode: string;
+    windSpeedKph: number;
+    sky: string;
+    ts: Date;
+    elapsedTimeMillis: number;
+    sid: number;
+    pid: number;
+    carNumber: string;
+    classId: string;
+}
+
+export interface RankWithRunningStatus extends Rank {
+    isRunning: boolean;
+}
