@@ -32,7 +32,7 @@ const filterCars: FilterCars = {
     },
     // gt
     23: {
-        name: "Barichello",
+        name: "Barrichello",
         border: "border-green-500",
     },
 };

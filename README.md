@@ -1,3 +1,13 @@
+# 2026 Le Mans Tracker
+
+![Screenshot](/public/screenshot.png?raw=true "Screenshot")
+
+## change cars
+
+edit `/app/car-lookup.ts` to track your cars
+
+## Project dev blurb
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
