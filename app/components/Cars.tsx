@@ -94,8 +94,10 @@ export const CarList = () => {
     const [loading, setLoading] = useState(true);
 
     async function fetchTiming() {
+        setLoading(true);
         const res = await fetch(`/api/timing`);
         if (!res.ok) {
+            setLoading(false);
             return;
         }
         const data: { cars: RankWithRunningStatus[] } = await res.json();
@@ -105,19 +107,13 @@ export const CarList = () => {
         }
         setLoading(false);
     }
+
     useEffect(() => {
-        const inititalSetup = async () => {
+        const setup = async () => {
             await fetchTiming();
         };
-        inititalSetup();
-    }, []);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setLoading(true);
-            fetchTiming();
-        }, 30_000);
-
+        setup();
+        const interval = setInterval(fetchTiming, 30_000);
         return () => clearInterval(interval);
     }, []);
 
@@ -125,7 +121,7 @@ export const CarList = () => {
         return (
             <>
                 <Spinner />
-                <p className="text-center text-white">Loading...</p>;
+                <p className="text-center text-white">Loading...</p>
             </>
         );
     }
@@ -144,7 +140,7 @@ export const CarList = () => {
             {loading && <Spinner />}
             {!loading && (
                 <p className="mt-4 opacity-50 text-center text-white">
-                    Refeshes once in a while
+                    Refreshes once in a while
                 </p>
             )}
         </>

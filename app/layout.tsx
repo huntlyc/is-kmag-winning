@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Is KMag Winning?",
-    description: "Asking the the important questions...",
+    title: "Is K-mag Winning?",
+    description: "Asking the important questions...",
 };
 
 export default function RootLayout({

@@ -53,16 +53,3 @@ export async function GET() {
     }
     return Response.json({ error: `couldnt get feed ${res.status}` });
 }
-
-export async function HEAD() { }
-
-export async function POST() { }
-
-export async function PUT() { }
-
-export async function DELETE() { }
-
-export async function PATCH() { }
-
-// If `OPTIONS` is not defined, Next.js will automatically implement `OPTIONS` and set the appropriate Response `Allow` header depending on the other methods defined in the Route Handler.
-export async function OPTIONS() { }

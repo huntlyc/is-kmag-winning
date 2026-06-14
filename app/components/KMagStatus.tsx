@@ -21,7 +21,7 @@ export const KMagStatus = (props: { cars: RankWithRunningStatus[] }) => {
     return (
         <>
             <h1 className="text-4xl mb-2 font-bold tracking-tight text-center text-white">
-                Is KMag Winning?
+                Is K-mag Winning?
             </h1>
             <h2 className="text-4xl font-bold tracking-tight text-center">{span}</h2>
         </>
