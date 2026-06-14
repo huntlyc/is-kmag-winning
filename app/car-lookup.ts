@@ -7,14 +7,14 @@ interface FilterCars {
     [key: number]: CarDetails;
 }
 
-const filterCars: FilterCars = {
+export const filterCars: FilterCars = {
     // hyper
     15: {
         name: "K-mag",
         border: "border-blue-500",
     },
-    38: {
-        name: "Aitkin",
+    12: {
+        name: "Delétraz",
         border: "border-yellow-500",
     },
     51: {
@@ -36,4 +36,3 @@ const filterCars: FilterCars = {
         border: "border-green-500",
     },
 };
-export default filterCars;

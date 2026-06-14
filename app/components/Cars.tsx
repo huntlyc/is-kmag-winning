@@ -1,9 +1,9 @@
 "use client";
 
-import { KMagStatus } from "./KMagStatus";
-import filterCars from "../car-lookup";
-import { RankWithRunningStatus } from "../types/raw-timing-feed";
 import { useEffect, useState } from "react";
+import { filterCars } from "@/app/car-lookup";
+import { KMagStatus } from "@/app/components/KMagStatus";
+import { RankWithRunningStatus } from "@/app/types/raw-timing-feed";
 
 const getDrivername = (car: RankWithRunningStatus) => {
     let name = "";
@@ -15,20 +15,45 @@ const getDrivername = (car: RankWithRunningStatus) => {
     return name;
 };
 
-const Car = ({ car }: { car: RankWithRunningStatus }) => {
+const getBorder = (car: RankWithRunningStatus) => {
     let borderClass = "border-zinc-800";
     Object.entries(filterCars).forEach(([carNumber, carDetails]) => {
         if (carNumber == car.carNumber) {
             borderClass = carDetails.border;
         }
     });
+    return borderClass;
+};
 
+const CarStatusBadge = (props: { car: RankWithRunningStatus }) => {
+    const car = props.car;
+    let runningColour = "bg-emerald-500/15 text-emerald-400";
+
+    if (car.inPit) {
+        runningColour = "bg-amber-300/15 text-amber-300";
+    }
+
+    if (!car.isRunning) {
+        runningColour = "bg-red-500/15 text-red-400";
+    }
+
+    return (
+        <span
+            className={`rounded-full px-3 py-1 text-xs font-medium ${runningColour}`}
+        >
+            {car.isRunning ? (car.inPit ? "Pit" : "Running") : "Retired"}
+        </span>
+    );
+};
+
+const CarCard = ({ car }: { car: RankWithRunningStatus }) => {
     const overallFirst =
         car.overallPosition === 1 ? "text-yellow-400" : "text-white";
     const classFirst = car.position === 1 ? "text-yellow-400" : "text-white";
+
     return (
         <article
-            className={`rounded-xl border-2 ${borderClass} bg-zinc-900 p-5 shadow-sm transition hover:bg-zinc-800`}
+            className={`rounded-xl border-2 ${getBorder(car)} bg-zinc-900 p-5 shadow-sm transition hover:bg-zinc-800`}
         >
             <div className="flex items-start justify-between">
                 <div>
@@ -38,17 +63,7 @@ const Car = ({ car }: { car: RankWithRunningStatus }) => {
                         #{car.carNumber} <small>({getDrivername(car)})</small>
                     </h2>
                 </div>
-
-                <span
-                    className={`rounded-full px-3 py-1 text-xs font-medium ${car.isRunning
-                            ? car.inPit
-                                ? "bg-amber-300/15 text-amber-300"
-                                : "bg-emerald-500/15 text-emerald-400"
-                            : "bg-red-500/15 text-red-400"
-                        }`}
-                >
-                    {car.isRunning ? (car.inPit ? "Pit" : "Running") : "Retired"}
-                </span>
+                <CarStatusBadge car={car} />
             </div>
 
             <div className="mt-6 grid grid-cols-2 gap-4">
@@ -74,15 +89,7 @@ const Car = ({ car }: { car: RankWithRunningStatus }) => {
     );
 };
 
-export const Spinner = () => {
-    return (
-        <div className="flex items-center justify-center py-10">
-            <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-600 border-t-white" />
-        </div>
-    );
-};
-
-export const Cars = () => {
+export const CarList = () => {
     const [cars, setCars] = useState<RankWithRunningStatus[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -109,13 +116,18 @@ export const Cars = () => {
         const interval = setInterval(() => {
             setLoading(true);
             fetchTiming();
-        }, 60_000); // every minute
+        }, 30_000);
 
         return () => clearInterval(interval);
     }, []);
 
     if (cars.length == 0) {
-        return <p>Loading...</p>;
+        return (
+            <>
+                <Spinner />
+                <p className="text-center text-white">Loading...</p>;
+            </>
+        );
     }
 
     return (
@@ -126,7 +138,7 @@ export const Cars = () => {
 
             <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {cars.map((car) => (
-                    <Car key={car.pid} car={car} />
+                    <CarCard key={car.pid} car={car} />
                 ))}
             </section>
             {loading && <Spinner />}
@@ -136,5 +148,13 @@ export const Cars = () => {
                 </p>
             )}
         </>
+    );
+};
+
+export const Spinner = () => {
+    return (
+        <div className="flex items-center justify-center py-10">
+            <div className="h-8 w-8 animate-spin rounded-full border-2 border-zinc-600 border-t-white" />
+        </div>
     );
 };

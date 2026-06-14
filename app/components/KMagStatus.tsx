@@ -1,4 +1,4 @@
-import { RankWithRunningStatus } from "../types/raw-timing-feed";
+import { RankWithRunningStatus } from "@/app/types/raw-timing-feed";
 
 export const KMagStatus = (props: { cars: RankWithRunningStatus[] }) => {
     const cars = props.cars;

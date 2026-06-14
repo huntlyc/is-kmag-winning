@@ -1,8 +1,10 @@
-import type { NextRequest } from "next/server";
-import * as timing from "../../types/raw-timing-feed";
-import filterCars from "@/app/car-lookup";
+import {
+    TimingDetails,
+    RankWithRunningStatus,
+} from "@/app/types/raw-timing-feed";
+import { filterCars } from "@/app/car-lookup";
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     // focus cars
     const filterCarNums: number[] = [];
     Object.keys(filterCars).forEach((carNumber) => {
@@ -14,9 +16,9 @@ export async function GET(request: NextRequest) {
     );
 
     if (res.ok) {
-        const timing: timing.TimingDetails = await res.json();
+        const timing: TimingDetails = await res.json();
 
-        const cars: timing.RankWithRunningStatus[] = [];
+        const cars: RankWithRunningStatus[] = [];
 
         timing.ranks.forEach((car) => {
             const curCarNum = parseInt(car.carNumber, 10);
@@ -52,15 +54,15 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: `couldnt get feed ${res.status}` });
 }
 
-export async function HEAD(request: NextRequest) { }
+export async function HEAD() { }
 
-export async function POST(request: NextRequest) { }
+export async function POST() { }
 
-export async function PUT(request: NextRequest) { }
+export async function PUT() { }
 
-export async function DELETE(request: NextRequest) { }
+export async function DELETE() { }
 
-export async function PATCH(request: NextRequest) { }
+export async function PATCH() { }
 
 // If `OPTIONS` is not defined, Next.js will automatically implement `OPTIONS` and set the appropriate Response `Allow` header depending on the other methods defined in the Route Handler.
-export async function OPTIONS(request: NextRequest) { }
+export async function OPTIONS() { }
