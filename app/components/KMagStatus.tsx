@@ -1,15 +1,12 @@
 import { RankWithRunningStatus } from "../types/raw-timing-feed";
 
-export const KMagStatus = (props: {
-    cars: RankWithRunningStatus[];
-    num: number;
-}) => {
+export const KMagStatus = (props: { cars: RankWithRunningStatus[] }) => {
     const cars = props.cars;
-    const num = props.num;
+    const KMAG_NUMBER = 15;
 
     let span = <span className="text-red-600">No</span>;
     cars.forEach((car) => {
-        if (parseInt(car.carNumber, 10) == num) {
+        if (parseInt(car.carNumber, 10) == KMAG_NUMBER) {
             if (!car.isRunning) {
                 span = <span className="text-red-300">He&apos;s gone home</span>;
             } else if (car.overallPosition == 1) {

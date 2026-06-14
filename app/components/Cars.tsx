@@ -2,7 +2,6 @@
 
 import { KMagStatus } from "./KMagStatus";
 import filterCars from "../car-lookup";
-const KMAG_NUMBER = 15;
 import { RankWithRunningStatus } from "../types/raw-timing-feed";
 import { useEffect, useState } from "react";
 
@@ -122,7 +121,7 @@ export const Cars = () => {
     return (
         <>
             <header className="mb-10">
-                <KMagStatus cars={cars} num={KMAG_NUMBER} />
+                <KMagStatus cars={cars} />
             </header>
 
             <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
